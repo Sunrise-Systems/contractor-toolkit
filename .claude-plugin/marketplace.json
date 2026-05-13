@@ -1,0 +1,36 @@
+{
+  "name": "contractor-toolkit",
+  "version": "0.1.0",
+  "description": "Claude Code plugin marketplace for general contractors — brand, branded docs, estimating, proposals, timelines, change orders, RFIs, submittals, daily logs",
+  "owner": {
+    "name": "Contractor Toolkit Contributors",
+    "url": "https://github.com/"
+  },
+  "plugins": [
+    {
+      "name": "contractor-initialize",
+      "source": "./plugins/contractor-initialize",
+      "description": "One-time setup wizard — configures every contractor-* skill for your company"
+    },
+    {
+      "name": "contractor-brand",
+      "source": "./plugins/contractor-brand",
+      "description": "Brand identity reference — colors, typography, voice, logos, sub-brands"
+    },
+    {
+      "name": "contractor-docs",
+      "source": "./plugins/contractor-docs",
+      "description": "Branded document generator — HTML primary, DOCX secondary, matches your brand identity"
+    },
+    {
+      "name": "contractor-estimating",
+      "source": "./plugins/contractor-estimating",
+      "description": "Preconstruction estimating pipeline — ROM, Conceptual Budget, Formal Bid, AIA A201 contract"
+    },
+    {
+      "name": "contractor-extras",
+      "source": "./plugins/contractor-extras",
+      "description": "Common contractor deliverables — proposals, project timelines, change orders, RFIs, submittals, daily logs, internal docs"
+    }
+  ]
+}

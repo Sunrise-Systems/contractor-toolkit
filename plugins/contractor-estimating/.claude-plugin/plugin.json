@@ -1,0 +1,15 @@
+{
+  "name": "contractor-estimating",
+  "version": "0.1.0",
+  "description": "Preconstruction estimating pipeline for general contractors. Three-stage funnel (ROM, Conceptual Budget, Formal Bid) across eight phases. Generates client-facing budgets, sub bid packages, exclusions workbooks, and AIA A201 contracts.",
+  "license": "MIT",
+  "keywords": [
+    "construction",
+    "estimating",
+    "preconstruction",
+    "general-contractor",
+    "csi",
+    "rs-means",
+    "aia"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "name": "contractor-initialize",
+  "version": "0.1.0",
+  "description": "One-time setup wizard for the contractor-toolkit. Configures company brand, voice, logos, ICP, and estimating defaults — then templates every sibling plugin to match.",
+  "author": {
+    "name": "Sunrise Systems",
+    "url": "https://github.com/Sunrise-Systems"
+  },
+  "license": "proprietary",
+  "keywords": ["construction", "setup", "wizard", "contractor", "general-contractor", "branding", "estimating", "initialize"]
+}

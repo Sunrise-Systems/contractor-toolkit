@@ -1,0 +1,11 @@
+.DS_Store
+node_modules/
+*.log
+.env
+.env.local
+
+# Per-installation company config — should NOT be committed to a public template fork
+.claude/contractor.local.md
+.claude/contractor-brand.local.md
+.claude/contractor-estimating.local.md
+.claude/contractor-docs.local.md

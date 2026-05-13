@@ -1,0 +1,19 @@
+{
+  "name": "contractor-docs",
+  "version": "0.1.0",
+  "description": "Generate branded construction documents — ROM budgets, formal bids, proposals, reports, letters. HTML primary, DOCX secondary. Token-driven so any contractor brand can plug in colors, fonts, and logos.",
+  "license": "MIT",
+  "author": {
+    "name": "Contractor Toolkit"
+  },
+  "keywords": [
+    "construction",
+    "documents",
+    "rom",
+    "estimate",
+    "proposal",
+    "html",
+    "docx",
+    "branded"
+  ]
+}
