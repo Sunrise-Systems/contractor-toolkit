@@ -73,6 +73,21 @@ gh repo create my-construction-skills --private --source=. --remote=origin --pus
 
 Each teammate clones your fork, installs the marketplace, and gets your company's branded skills — no re-configuration.
 
+### 5. (Optional) Package for Claude.ai / Cowork
+
+If you also want these skills available at the **org level on claude.ai** (web) or in **Cowork**, build standalone skill packages:
+
+```bash
+./scripts/build-dist.sh
+```
+
+That produces:
+
+- `dist/skills/<skill-name>/` — flat skill directories (SKILL.md at root)
+- `dist/zips/<skill-name>.zip` — zipped, ready to upload
+
+Then in Claude.ai: **Settings → Skills → New skill** and drag-and-drop the zip you want. Repeat per skill. See `dist/README.md` for the full install matrix.
+
 ---
 
 ## File Layout

@@ -9,3 +9,7 @@ node_modules/
 .claude/contractor-brand.local.md
 .claude/contractor-estimating.local.md
 .claude/contractor-docs.local.md
+
+# Build artifacts — regenerate with scripts/build-dist.sh
+dist/skills/
+dist/zips/
