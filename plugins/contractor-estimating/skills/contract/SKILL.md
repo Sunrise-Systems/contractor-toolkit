@@ -26,9 +26,12 @@ Two deliverables:
 
 1. **Contract Preview HTML** (primary for review) — Cover tag: "Construction Contract — Preview". Summarizes party info, contract sum, exhibits list, applied riders. Save as `contractor_contract_preview_[project-slug]_[YYYY-MM].html`. This is what the owner and estimator review BEFORE the signable DOCX is generated.
 
-2. **AIA A201 Contract DOCX** (signable) — Curated AIA A201, ready for signature, assembled from:
+2. **Contract DOCX** (signable) — ready for signature, assembled from:
 
-   1. **Base boilerplate** — `<brand>/resources/AIA_A201_GeneralConditions.docx` (industry-standard General Conditions, 15 Articles, 1100+ lines) — provided via the `contractor-brand` plugin or licensed directly from AIA
+   1. **Base boilerplate** — resolved in this order:
+      a. `plugins/contractor-brand/skills/brand/resources/AIA_A201_GeneralConditions.docx` — the company's licensed AIA boilerplate, if they've placed it there (preferred; AIA documents are copyrighted and not bundled)
+      b. Any other licensed base the company specifies (ConsensusDocs, EJCDC, attorney-drafted)
+      c. **Fallback (ships with this skill):** `references/contract-skeleton.md` — a generic 15-article structure with neutral working language. When using the skeleton, state plainly that the output is NOT AIA text and MUST go through attorney review before signature.
    2. **Project-specific fills** — Owner name/address, Architect name/address, Contractor ({{COMPANY_NAME}}), Project name/location, Contract sum, dates
    3. **Scope exhibit** — Division-by-division scope pulled from the formal bid
    4. **Schedule of Values exhibit** — Pulled from the formal bid
@@ -69,7 +72,7 @@ When the project matches these types, append the corresponding rider to the base
 
 1. **Locate accepted estimate** — user provides path OR picks from recent formal bids in working directory
 2. **Extract project data** — parse the formal bid DOCX for: project name, address, owner, architect, contract sum, scope divisions, exclusions list
-3. **Load A201 base** — read your AIA A201 boilerplate
+3. **Load contract base** — Glob for the licensed boilerplate first; fall back to `references/contract-skeleton.md` and announce which base is in use
 4. **Fill placeholder fields** — the A201 has `«»` French-quote placeholders for project name, owner, architect, etc. Replace with project-specific values.
 5. **Identify riders** — based on project type + risk factors, select applicable riders
 6. **Append exhibits:**

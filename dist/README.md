@@ -51,10 +51,28 @@ After editing any `plugins/**/SKILL.md` or its references:
 
 This wipes `dist/skills/` and `dist/zips/` and regenerates from `plugins/`. This README is preserved. Always edit source under `plugins/` — manual edits to files inside `dist/skills/` are lost on the next build.
 
+## Build AFTER /initialize — not before
+
+The build script copies skills as-is. If you run it before `/initialize`, every zip contains raw `{{TEMPLATE_TOKENS}}` and the uploaded skills will produce documents with placeholders in them. The script scans for this and warns — take the warning seriously. Correct order: install in Claude Code → `/initialize` → `./scripts/build-dist.sh` → upload.
+
+## Cross-skill dependencies — upload these together
+
+Skills reference each other. On Claude Code the plugin system resolves this; on claude.ai each zip is an island, so upload dependency groups together:
+
+| If you upload… | Also upload | Why |
+|---|---|---|
+| Any estimating skill (`rom`, `estimate`, `conceptual-budget`, `formal-bid`, …) | `estimating-workflow`, `document-generator`, `brand` | The stage skills delegate to the pipeline; documents need the canonical styles |
+| Any extras skill (`proposal`, `rfi`, `daily-log`, …) | `document-generator`, `brand` | All output goes through the doc engine |
+| `branded-doc` | `document-generator` | It's an alias that delegates |
+| Any contractor-subs skill | `document-generator`, `brand` | Same doc engine |
+
+Also note: sibling-plugin file paths (e.g. `${CLAUDE_PLUGIN_ROOT}/../contractor-brand/...` for logo files) do not resolve on claude.ai. Logo-dependent covers fall back to the text wordmark there — full fidelity requires Claude Code.
+
 ## What's NOT included
 
 - `plugin.json` files (Claude Code-only)
 - Subagents under `plugins/contractor-estimating/agents/` — Claude Code only; not part of standalone skills
+- Hooks under `plugins/contractor-docs/hooks/` — Claude Code only (the unresolved-token guard)
 - The top-level `marketplace.json`
 
 If a user installs the standalone skills, they get the SKILL.md content + references. They lose the agent subroutines from `contractor-estimating`, so for the full preconstruction pipeline experience, Claude Code installation is recommended.

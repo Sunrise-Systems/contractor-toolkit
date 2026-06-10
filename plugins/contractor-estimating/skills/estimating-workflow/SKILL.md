@@ -53,12 +53,12 @@ The following resource files are referenced throughout this pipeline:
 - `references/exclusions-master.md` — Combined exclusions library by category
 - `references/clarifications-master.md` — Combined inclusions/clarifications by division
 
-**Optional companion resources (if `contractor-brand` plugin is installed):**
-- `<brand>/resources/Investment_Guide.pdf` — Your company's investment guide
-- `<brand>/resources/Examples/` — Gold-standard example deliverables (ROM HTML, Formal Bid DOCX)
-- `<brand>/resources/AIA_A201_GeneralConditions.docx` — Standard GC contract boilerplate
+**Optional companion resources — these do NOT ship with the toolkit.** If the user has added them to `plugins/contractor-brand/skills/brand/resources/`, use them; otherwise fall back as noted:
+- `resources/Investment_Guide.pdf` — company investment guide. Fallback: skip; not required.
+- `resources/Examples/` — gold-standard example deliverables (ROM HTML, Formal Bid DOCX). Fallback: the canonical HTML/DOCX templates in `contractor-docs` (`references/html-canonical.md`, `references/templates.md`) ARE the canonical structure.
+- `resources/AIA_A201_GeneralConditions.docx` — licensed AIA boilerplate for `/contract`. Fallback: the generic skeleton at `skills/contract/references/contract-skeleton.md` (see `/contract` for the legal caveats).
 
-Always consult example files when generating deliverables — they are the canonical structure. Clone the design language, substitute project-specific content.
+Check for an examples library before generating deliverables (`Glob` the resources path). If examples exist, clone their design language and substitute project-specific content. If not, follow the `contractor-docs` canonical templates exactly — never invent a third style.
 
 ## Identity
 
@@ -89,8 +89,12 @@ Stage 3 — Formal Bid                             → Deliverable: /formal-bid
 ├── Phase 7: Subcontractor Coordination Packages → also available standalone as /sub-bid-package
 └── Phase 8: Document Generation (formal bid DOCX + sub bid packages)
 
-Post-contract                                    → Deliverable: /contract
-└── AIA A201 curated from the accepted formal bid
+Post-bid                                         → /bid-leveling
+└── Sub bids returned: level, compare, select
+
+Post-contract                                    → /contract, /subcontract
+├── Prime contract curated from the accepted formal bid
+└── Subcontract agreements per selected sub
 ```
 
 ### Entry Points
@@ -101,9 +105,12 @@ Users can enter the workflow at any stage depending on what they have in hand:
 |---|---|---|
 | Just an idea, basic params | `/rom` | HTML ROM + optional DOCX ROM |
 | Plans in hand (SD/DD/CD) | `/conceptual-budget` | HTML budget + XLSX exclusions + scope-check findings |
+| Plan set PDF, need quantities | `/plan-takeoff` | Quantity takeoff schedule (feeds Phase 4) |
 | Plans + sub bids collected | `/formal-bid` | Formal bid DOCX + sub bid DOCX per trade + optional cost breakdown |
 | Plans in hand, only want gap analysis | `/scope-check` | Scope check report (HTML or DOCX) |
-| Accepted formal bid, need contract | `/contract` | AIA A201 curated DOCX + exhibits |
+| Sub bids returned, need comparison | `/bid-leveling` | Leveling matrix per trade (HTML + XLSX) |
+| Accepted formal bid, need contract | `/contract` | Curated contract DOCX + exhibits |
+| Sub selected, need their agreement | `/subcontract` | Subcontract agreement DOCX |
 | Need a single sub bid package | `/sub-bid-package` | Single-trade DOCX |
 | Need Excel exclusions for markup | `/exclusions-excel` | XLSX workbook |
 
@@ -717,6 +724,16 @@ contractor_exclusions_[project-slug]_[YYYY-MM].xlsx                   — Exclus
 ```
 
 All files save to the working directory unless the user specifies otherwise.
+
+### Pre-delivery validation — mandatory
+
+Before presenting any generated document to the user, scan it for unresolved template tokens:
+
+```bash
+grep -Eo '\{\{[A-Z_0-9]+\}\}' <generated-file> | sort -u
+```
+
+If any token appears, **stop** — do not deliver the file. Either the toolkit was never initialized (tell the user to run `/initialize`) or a value is missing (ask for it, substitute, re-check). A client must never receive a document containing `{{COMPANY_NAME}}`.
 
 ---
 

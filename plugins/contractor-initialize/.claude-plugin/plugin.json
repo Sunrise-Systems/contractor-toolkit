@@ -6,6 +6,6 @@
     "name": "Sunrise Systems",
     "url": "https://github.com/Sunrise-Systems"
   },
-  "license": "proprietary",
+  "license": "MIT",
   "keywords": ["construction", "setup", "wizard", "contractor", "general-contractor", "branding", "estimating", "initialize"]
 }

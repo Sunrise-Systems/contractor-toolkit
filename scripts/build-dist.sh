@@ -48,6 +48,21 @@ for skill_dir in "$ROOT"/plugins/*/skills/*/; do
 done
 
 echo ""
+echo "Checking for unresolved template tokens…"
+unresolved="$(grep -rEl '\{\{[A-Z_0-9]+\}\}' "$DIST/skills" 2>/dev/null \
+  | xargs -I{} grep -hEo '\{\{[A-Z_0-9]+\}\}' {} 2>/dev/null \
+  | grep -v -e 'TOKEN' -e 'PLACEHOLDER' | sort -u || true)"
+if [ -n "$unresolved" ]; then
+  echo ""
+  echo "  ⚠ WARNING: these template tokens are still unresolved in dist/skills/:"
+  echo "$unresolved" | sed 's/^/      /'
+  echo ""
+  echo "    These zips will produce documents with raw {{TOKENS}} in them."
+  echo "    Run /initialize in Claude Code FIRST, then re-run this script."
+  echo "    ({{LOGO_*}} tokens are expected if logo files haven't been provided yet.)"
+  echo ""
+fi
+
 echo "Zipping packages…"
 (
   cd "$DIST/skills"
