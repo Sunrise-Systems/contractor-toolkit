@@ -4,7 +4,7 @@
   "description": "Preconstruction estimating pipeline for general contractors. Three-stage funnel (ROM, Conceptual Budget, Formal Bid) across eight phases. Plan takeoff, bid leveling, client-facing budgets, sub bid packages, exclusions workbooks, contracts, and subcontracts.",
   "license": "MIT",
   "author": {
-    "name": "Sunrise Systems",
+    "name": "Formwork",
     "url": "https://github.com/Sunrise-Systems"
   },
   "keywords": [

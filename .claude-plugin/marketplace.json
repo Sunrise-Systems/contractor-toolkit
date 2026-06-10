@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Claude Code plugin marketplace for general contractors — brand, branded docs, estimating, proposals, timelines, change orders, RFIs, submittals, daily logs",
   "owner": {
-    "name": "Sunrise Systems",
+    "name": "Formwork",
     "url": "https://github.com/Sunrise-Systems/contractor-toolkit"
   },
   "plugins": [

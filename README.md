@@ -121,4 +121,4 @@ Improvements that would help any contractor? PRs welcome.
 
 ## Credits & license
 
-Built by [Sunrise Systems](https://github.com/Sunrise-Systems), derived from plugin suites built for real contractors. MIT licensed — see `LICENSE`.
+Built by [Formwork](https://github.com/Sunrise-Systems), derived from plugin suites built for real contractors. MIT licensed — see `LICENSE`.

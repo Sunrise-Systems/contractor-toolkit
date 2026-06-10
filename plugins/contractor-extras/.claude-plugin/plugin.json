@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "description": "Construction deliverable skills: proposals, timelines, change orders, RFIs, submittals, daily logs, internal docs, and project intake.",
   "license": "MIT",
-  "author": "contractor-toolkit",
+  "author": {
+    "name": "Formwork",
+    "url": "https://github.com/Sunrise-Systems"
+  },
   "keywords": [
     "construction",
     "contractor",
