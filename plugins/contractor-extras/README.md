@@ -12,6 +12,11 @@ Construction deliverable skills for the `contractor-toolkit` marketplace. Each s
 | **rfi** | `/rfi` | One-page Request for Information with drawing/spec references |
 | **submittal** | `/submittal` | Submittal cover sheet and log entry |
 | **daily-log** | `/daily-log` | Daily site report — crews, work, weather, deliveries, safety |
+| **lookahead** | `/lookahead` | Rolling 3-week look-ahead with constraints and blockers |
+| **punch-list** | `/punch-list` | Punch list by area with trade assignment and re-walk tracking |
+| **rfi-log** | `/rfi-log` | Project RFI register — ball-in-court, aging, impact tracking |
+| **incident-report** | `/incident-report` | Jobsite incident/near-miss report with OSHA recordability checklist |
+| **capabilities-statement** | `/capabilities-statement` | Marketing one-pager, project sheets, case studies |
 | **internal-doc** | `/internal-doc` | Flexible internal memo / weekly status / preconstruction notes |
 | **project-intake** | `/project-intake` | Qualify a prospective project and generate a brief for estimating |
 

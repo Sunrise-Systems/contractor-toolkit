@@ -17,8 +17,11 @@ Plus standalone utilities:
 
 | Command | Purpose |
 |---|---|
+| `/plan-takeoff` | Draft quantity takeoff from an uploaded plan set PDF |
 | `/scope-check` | Gap analysis only — plans vs. master checklists |
 | `/sub-bid-package` | Single-trade bid invitation |
+| `/bid-leveling` | Compare returned sub bids — scope gaps, adjustments, award recommendation |
+| `/subcontract` | Subcontract agreement for an awarded trade |
 | `/exclusions-excel` | Project-filtered exclusions XLSX workbook |
 | `/estimate` | Full end-to-end orchestrator |
 | `/setup` | Save PM contact info and project defaults |

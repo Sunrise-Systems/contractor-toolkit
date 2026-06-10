@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "description": "Claude Code plugin marketplace for general contractors — brand, branded docs, estimating, proposals, timelines, change orders, RFIs, submittals, daily logs",
   "owner": {
-    "name": "Contractor Toolkit Contributors",
-    "url": "https://github.com/"
+    "name": "Sunrise Systems",
+    "url": "https://github.com/Sunrise-Systems/contractor-toolkit"
   },
   "plugins": [
     {
@@ -25,12 +25,17 @@
     {
       "name": "contractor-estimating",
       "source": "./plugins/contractor-estimating",
-      "description": "Preconstruction estimating pipeline — ROM, Conceptual Budget, Formal Bid, AIA A201 contract"
+      "description": "Preconstruction estimating pipeline — ROM, Conceptual Budget, Formal Bid, plan takeoff, bid leveling, contracts, subcontracts"
     },
     {
       "name": "contractor-extras",
       "source": "./plugins/contractor-extras",
-      "description": "Common contractor deliverables — proposals, project timelines, change orders, RFIs, submittals, daily logs, internal docs"
+      "description": "Common contractor deliverables — proposals, timelines, change orders, RFIs and RFI logs, submittals, daily logs, look-aheads, punch lists, incident reports, capabilities statements"
+    },
+    {
+      "name": "contractor-subs",
+      "source": "./plugins/contractor-subs",
+      "description": "Skills for subcontractors — quote GC bid invitations, change order requests, T&M tickets, progress pay applications"
     }
   ]
 }
