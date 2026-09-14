@@ -2,6 +2,7 @@
   "name": "contractor-brand",
   "version": "0.1.0",
   "description": "Templated brand identity reference for construction companies — colors, typography, voice, logos, sub-brand guidelines, and document archetypes. Run /initialize to populate placeholders with your company's specifics.",
+  "author": {"name": "Formwork", "url": "https://github.com/Sunrise-Systems"},
   "license": "MIT",
   "keywords": [
     "construction",

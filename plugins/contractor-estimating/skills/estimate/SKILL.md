@@ -1,6 +1,6 @@
 ---
 name: estimate
-description: Start the preconstruction pipeline end-to-end. Routes to the appropriate stage command (/rom, /conceptual-budget, /formal-bid) based on project readiness. Runs all 3 stages and 8 internal phases. Outputs HTML ROM + DOCX budget + formal bid DOCX + sub bid packages + optional AIA contract.
+description: Start the preconstruction pipeline end-to-end. Routes to the appropriate stage command (/rom, /conceptual-budget, /formal-bid) based on project readiness. Selects applicable stages and phases with explicit review gates. Outputs HTML ROM + DOCX budget + formal bid DOCX + sub bid packages + optional AIA contract.
 argument-hint: "[project description, or leave blank to start interactively]"
 allowed-tools:
   - Read
@@ -11,7 +11,23 @@ allowed-tools:
 
 # /estimate — Preconstruction Pipeline (Full)
 
-Act as {{COMPANY_NAME}}'s senior preconstruction estimator and run the full three-stage pipeline — ROM → Conceptual Budget → Formal Bid → Contract.
+## Safety contract
+
+Read `references/toolkit-safety.md` from the toolkit root (repository) or this skill root (standalone); resolve `GUARD` there as described in that guide. Missing helpers or companion resources block the gate.
+
+- **Input:** Exact project/revision, indexed drawing/source hashes, scope, takeoff, quotes, and estimator-reviewed assumptions.
+- **Output:** Stage-appropriate estimate drafts, evidence/state files, and artifact receipts; issuance remains `not_issued`.
+- **AI role:** Extract, reconcile, recompute, draft, and checkpoint; never invent rates, source facts, or consent.
+- **Human role:** Named estimator owns scope and pricing judgment; designated commercial reviewer approves final content/purpose.
+- **Risk:** Consequential financial output, including draft estimates.
+- **Checkpoint:** `workflow-state.json` and `pricing-evidence.json` beside project outputs; immutable prior revisions in local `checkpoints/`, outside package inputs.
+- **Approval boundary:** Scope approval precedes takeoff/pricing; pricing review precedes final content-digest approval. Changed source/scope/amount invalidates affected approvals; do not infer approval from a prior conversation.
+- **Verifier:** `python3 "$GUARD" check-workflow --state "$STATE" --evidence "$EVIDENCE"`, then independently reopen each saved artifact via `python3 "$GUARD" verify-artifact --artifact "$ARTIFACT" --expectations "$EXPECTATIONS" --receipt "$RECEIPT"`.
+- **Failure:** Record `needs_human`, exception owner and next safe action; preserve drafts/checkpoints, stop finalization, and resume only after source/artifact hash checks.
+
+
+
+Assist {{COMPANY_NAME}}'s estimator with the supervised three-stage pipeline — ROM → Conceptual Budget → Formal Bid → Contract.
 
 For single-stage work, use the targeted commands instead:
 
@@ -20,7 +36,7 @@ For single-stage work, use the targeted commands instead:
 | `/rom` | Just an idea, basic params (type + SF + location). Outputs HTML ROM. |
 | `/conceptual-budget` | Plans are in hand (SD/DD/CD). Outputs HTML budget + XLSX exclusions + scope-check findings. |
 | `/scope-check` | Gap analysis only — plans vs. master checklists, no pricing. |
-| `/formal-bid` | Sub bids collected, ready for client signature. Outputs formal bid DOCX + sub bid packages. |
+| `/formal-bid` | Sub bids collected, ready for estimator review. Outputs formal bid DOCX + sub bid packages. |
 | `/sub-bid-package` | Single-trade bid invitation only. |
 | `/exclusions-excel` | Filtered exclusions workbook only. |
 | `/contract` | AIA A201 curated from an accepted formal bid. |
@@ -61,7 +77,7 @@ Let's start with the project. Tell me about it:
 4. Do you have plans or drawings? What design phase?
    (Concept, SD, DD, CD — or just a description?)
 
-Give me whatever you have and I'll fill in the gaps.
+Give me what you have; I'll identify gaps and label assumptions for review.
 ```
 
 ## Project Settings
@@ -78,7 +94,7 @@ If not configured: "Tip: run `/setup` to save your contact info so you don't re-
 
 ## Pipeline
 
-Invoke the `estimating-workflow` skill to run the full 8-phase pipeline. Each phase builds on the previous:
+Invoke `estimating-workflow` with persisted state. Select applicable phases for this stage; skipped phases need reasons and cannot silently carry into formal pricing:
 
 1. **Plan Analysis & Division Scoping** — Which CSI divisions apply?
 2. **Written Scope by Division** — What work is included, division by division?
