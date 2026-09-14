@@ -104,7 +104,7 @@ Want these skills in the claude.ai web app or Cowork? **After running `/initiali
 ./scripts/build-dist.sh
 ```
 
-Then upload zips from `dist/zips/` at **Settings → Skills → New skill**. Order matters: zips built before `/initialize` contain unconfigured templates (the build script warns you). See `dist/README.md` for details and which skills depend on each other.
+Then upload release zips from `dist/zips/` only after human review. Unconfigured templates now fail release validation; there is no token-ignore switch. Install validation dependencies first, as below. See `dist/README.md` for safe preview/build commands and companion requirements.
 
 ---
 
@@ -118,6 +118,54 @@ Every skill is a Markdown file under `plugins/<plugin>/skills/<skill>/SKILL.md`.
 - Drop your licensed AIA boilerplate into `contractor-brand/skills/brand/resources/` and `/contract` uses it automatically
 
 Improvements that would help any contractor? PRs welcome.
+
+## Validation and safety baseline
+
+Use an isolated Python 3.13 environment (no system-package installation):
+
+```sh
+python3 -m venv /tmp/toolkit-venv
+. /tmp/toolkit-venv/bin/activate
+pip install -r scripts/requirements-validation.txt
+python3 scripts/validate-toolkit.py --mode source
+python3 -m unittest discover -s tests -v
+bash -n scripts/build-dist.sh
+bash -n plugins/contractor-docs/hooks/check-unresolved-tokens.sh
+bash scripts/build-dist.sh --mode template-preview --output-dir /tmp/toolkit-preview
+python3 scripts/validate-toolkit.py --mode template-preview --package-dir /tmp/toolkit-preview
+```
+
+Source checks cover **six plugins / 38 skills**: real duplicate-key-rejecting YAML/JSON,
+exact inventory/manifests, safe resource paths, deterministic package identities, and
+exact-context registered template tokens. Policy is `scripts/toolkit-policy.json`;
+`template-tokens.json` records literal lines/counts and explanatory versus required use.
+Review policy edits like code. It is not an authenticated whitelist.
+
+Release is the default build mode and rejects required unresolved tokens, including logos.
+A source checkout is intentionally not release-configured. Tests configure temporary
+synthetic trees only and prove 38 archives plus normalized source/package parity.
+Preview emits unpacked inspection files, never uploadable zips. Existing output must be
+build-owned; staging failure preserves prior output. See the distribution recovery notes.
+
+Read `references/toolkit-safety.md` and `references/guard-interface.md` before using
+`python3 scripts/toolkit_guard.py --help`. The helper checks digest-bound change plans,
+snapshots exact before-images, classifies readback, checks project-bound estimating
+state/provenance with Decimal arithmetic, and emits HTML/DOCX/XLSX readback receipts.
+It does not mutate planned files, authenticate consent, or persist workflow state for you.
+Confidential plans/checkpoints stay local outside package inputs.
+
+Only initialize, the three update skills, estimate, estimating-workflow, formal-bid,
+contract, incident-report, sub-pay-app and document-generator have integration guidance
+and static coverage. The shared policy is guidance for other skills, not equivalent
+integration coverage or proof of agent obedience. Supervised/domain review is pending;
+use `tests/manual-safety-evals.md` before pilot claims.
+
+Draft, review, approval and final verification are distinct. External issuance stays
+`not_issued`: no sending, signing, submission, payment approval or Matter mutation.
+The bounded checker never grants `final_verified`; professional and visual review are
+not automated. PDF verification is blocked until text/layout proof support exists;
+all XLSX formulas block (use reviewed values with independent covered calculations).
+The existing HTML Write hook is only defense in depth, not artifact verification.
 
 ## Credits & license
 

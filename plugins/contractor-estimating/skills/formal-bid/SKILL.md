@@ -11,7 +11,23 @@ allowed-tools:
 
 # /formal-bid — Stage 3 Formal Construction Proposal
 
-Generate the final construction proposal — the document the client signs. This is after the conceptual budget is approved, after sub bids are collected, and before the contract is signed.
+## Safety contract
+
+Read `references/toolkit-safety.md` from the toolkit root (repository) or this skill root (standalone); resolve `GUARD` there as described in that guide. Missing helpers or companion resources block the gate.
+
+- **Input:** Exact project/revision, indexed drawing/source hashes, scope, takeoff, quotes, and estimator-reviewed assumptions.
+- **Output:** Stage-appropriate estimate drafts, evidence/state files, and artifact receipts; issuance remains `not_issued`.
+- **AI role:** Extract, reconcile, recompute, draft, and checkpoint; never invent rates, source facts, or consent.
+- **Human role:** Named estimator owns scope and pricing judgment; designated commercial reviewer approves final content/purpose.
+- **Risk:** Consequential financial output, including draft estimates.
+- **Checkpoint:** `workflow-state.json` and `pricing-evidence.json` beside project outputs; immutable prior revisions in local `checkpoints/`, outside package inputs.
+- **Approval boundary:** Scope approval precedes takeoff/pricing; pricing review precedes final content-digest approval. Changed source/scope/amount invalidates affected approvals; do not infer approval from a prior conversation.
+- **Verifier:** `python3 "$GUARD" check-workflow --state "$STATE" --evidence "$EVIDENCE"`, then independently reopen each saved artifact via `python3 "$GUARD" verify-artifact --artifact "$ARTIFACT" --expectations "$EXPECTATIONS" --receipt "$RECEIPT"`.
+- **Failure:** Record `needs_human`, exception owner and next safe action; preserve drafts/checkpoints, stop finalization, and resume only after source/artifact hash checks.
+
+
+
+Prepare a formal construction proposal draft for scoped human review; it is not signed or issued. This is after the conceptual budget is approved, after sub bids are collected, and before the contract is signed.
 
 The canonical use case: *"Once the client agrees to the conceptual budget, go out to subs, collect pricing, and produce the actual bid/proposal. Pull structured data: scope per division, matched exclusions/inclusions per CSI code, clarifications, terms, and contract language."*
 
@@ -20,7 +36,7 @@ The canonical use case: *"Once the client agrees to the conceptual budget, go ou
 - Conceptual budget approved
 - Subcontractor pricing collected for major trades
 - Plans are CD-level or GMP-ready
-- Ready to send binding proposal to client
+- Preparing a binding proposal for commercial review
 
 ## What This Produces
 
@@ -133,7 +149,7 @@ Collect conversationally. If a `/conceptual-budget` was already run for this pro
 
 Invoke the `estimating-workflow` skill for **Phases 1-8** (full pipeline):
 
-- Phases 1-2: Scope (skip if `/conceptual-budget` was run — use its output)
+- Phases 1-2: Reuse scope only after exact project/revision/source-hash and approval checks; stale scope reopens review
 - Phases 3-5: Sub roster, takeoff, pricing (update with actual sub bids)
 - **Phase 6: Exclusions & Inclusions** — full library filtering
 - **Phase 7: Sub Bid Coordination Packages** — one per trade
@@ -169,14 +185,8 @@ Per Phase 7 of estimating-workflow:
 
 Line-by-line with unit costs and pricing reasoning for internal PM use during sub negotiation. Never sent to client.
 
-## Transition
+## Finalization and handoff
 
-At delivery, end with:
+Require approved scope and approved pricing from the named estimator. Reopen DOCX and HTML and verify consistency of project, revision, scope, allowances, exclusions, currency and totals against the approved semantic fields. Changed amounts or regenerated content require new approval. Keep sub packages as drafts; direct `/sub-bid-package` execution is not covered by these gates.
 
-```
-Formal Bid package is ready. Review the proposal DOCX and sub bid
-packages before sending.
-
-Next: get client signature, run /contract to generate the AIA A201,
-and kick off pre-construction.
-```
+Report exact paths, status, approval purpose/digest, readback receipts, and remaining review gaps. Final verification is not client acceptance or permission to send; issuance remains `not_issued`. `/contract` additionally requires evidence of the accepted bid and authorized legal review.

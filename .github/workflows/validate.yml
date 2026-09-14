@@ -1,0 +1,29 @@
+name: Validate toolkit
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: '3.13'
+      - name: Isolated parser environment
+        run: |
+          python3 -m venv /tmp/toolkit-venv
+          /tmp/toolkit-venv/bin/pip install -r scripts/requirements-validation.txt
+          echo "/tmp/toolkit-venv/bin" >> "$GITHUB_PATH"
+      - name: Source and deterministic safety tests
+        run: |
+          python3 scripts/validate-toolkit.py --mode source
+          python3 -m unittest discover -s tests -v
+          bash -n scripts/build-dist.sh
+          bash -n plugins/contractor-docs/hooks/check-unresolved-tokens.sh
+          git diff --check
+      - name: Unpacked preview only; release is tested in synthetic fixture
+        run: |
+          output="$(mktemp -d)/preview"
+          bash scripts/build-dist.sh --mode template-preview --output-dir "$output"
+          python3 scripts/validate-toolkit.py --mode template-preview --package-dir "$output"
